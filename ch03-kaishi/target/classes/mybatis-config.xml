@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!--指定properties文件的位置也叫引入外部配置文件， (target/class里面的)从类路径根开始找文件-->
+
+    <properties resource="jdbc.properties"/>
+
+    <!--控制mybatis全局行为-->
+    <settings>
+        <!--设置mybatis输出日志-->
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+    </settings>
+
+    <!--定义别名-->
+    <typeAliases>
+        <!--第一种方式.可以指定一个类型一个自定义别名
+              type：自定义类型的全限定名称
+              alias：别名（容易记忆的）
+        -->
+        <!--  <typeAlias type="cn.bj.domain.Student" alias="stu"  />
+                <typeAlias type="cn.bj.vo.ViewStudent" alias="vstu" />
+        -->
+
+        <!--第二种方式
+            <package> name是包名 ，这个包中的所有的类，类名就是别名（类目不区分大小写）
+        -->
+        <package name=""/>
+    </typeAliases>
+
+    <!--配置插件 位置是有讲究的 放的是一个过滤器-->
+   <!-- <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor"/>
+    </plugins>
+-->
+
+    <environments default="mm">
+        <environment id="mm">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <!--连接数据库的字符串-->
+                <property name="url" value="${jdbc.url}"/>
+                <!--?serverTimezone=UTC-->
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.passwd}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+
+    <!-- sql mapper (sql 映射文件) 的位置-->
+    <mappers>
+
+        <!--第一种方式：挨个指定多个mapper文件 太累-->
+        <!-- <mapper resource="cn/bj/dao/StudentDao.xml"/>-->
+         <mapper resource="com/bjpowernode/dao/StudentDao.xml"/>
+
+        <!--第二种方式：使用包名
+            name：是xml文件(mapper文件)所在的包名，这个包中的所有xml文件一次都能加载给mybatis
+            使用package要求：
+            1.mapper文件名称需要和接口名称一样，区分大小写的一样 （简称同名）
+            2.mapper文件和dao接口文件要在同一个目录
+        -->
+      <!--  <package name="cn.bj.dao"/>-->
+    </mappers>
+</configuration>
