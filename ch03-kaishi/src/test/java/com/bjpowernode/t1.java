@@ -49,6 +49,7 @@ public class t1 {
         for (StuAndClassVo vo:stuAndClassVos) {
             System.out.println(vo);
         }
+        System.out.println("xiughai");
 
     }
 }
