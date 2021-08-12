@@ -8,7 +8,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	
 	<typeAliases>
 		<!-- <typeAlias type="com.bjpowernode.mybatis.domain.Student" alias="student"/> -->
-		<package name="com.bjpowernode.crm.settings.domain.User"/>
+		<package name="com.bjpowernode.crm.settings.domain"/>
 	</typeAliases>
 	
 	<environments default="development">
@@ -24,6 +24,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	</environments>
 	<mappers>
 		<!-- <mapper resource="com/bjpowernode/mybatis/dao/StudentDao.xml" /> -->
-		<package name="com.bjpowernode.crm.settings.domain.User"/>
+		<!--<package name="com.bjpowernode.crm.settings.dao"/>-->
+		<mapper resource="com/bjpowernode/crm/settings/dao/UserDao.xml"/>
 	</mappers>
 </configuration>

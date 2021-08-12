@@ -14,19 +14,41 @@
 			$("#loginAct").focus()
 			//2.为登录按钮绑定事件，执行登录操作
 			$("#submitbtn").click(function (){
-
-					alert("yi");
-
-
+				login()
 			})
 			//3.为当前登录窗口绑定敲键盘事件
 			$(window).keydown(function (event){
 				if(event.keyCode==13){
-					alert("yi");
+					login()
 				}
 			})
 		})
-
+		/*函数写在$()外面不要写在里面，现在好使，以后就不好使了（动态生成的元素就不好使了）*/
+		function login(){
+			var loginAct=$.trim($("#loginAct").val());
+			var loginPwd=$.trim($("#loginPwd").val());
+			if(loginAct == "" ||loginPwd==""){
+				$("#msg").html("账号密码不能为空");
+				return false;
+			}
+			$.ajax({
+				url:"settings/user/login.do",
+				data:{
+					"loginAct":loginAct,
+					"loginPwd":loginPwd
+			},
+				type:"post",
+				dateType:"json",
+				success:function (data){
+					if(data.success){
+						//跳转到成功页面
+						window.location.href="workbench/index.html";
+					}else {
+						$("#msg").html(data.msg);
+					}
+				}
+			})
+		}
 	</script>
 </head>
 <body>
@@ -52,7 +74,7 @@
 					</div>
 					<div class="checkbox"  style="position: relative;top: 30px; left: 10px;">
 						
-							<span id="msg"></span>
+							<span id="msg" style="color: red"></span>
 						
 					</div>
 					<%--注意：按钮写在form表单中，默认的行为就是提交表单 哪怕没写type=“submit”
