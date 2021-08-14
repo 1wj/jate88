@@ -8,13 +8,12 @@
 <head>
 	<base href="<%=basePath%>">
 <meta charset="UTF-8">
-	<script type="text/javascript" src="jquery/jquery-1.11.1-min.js"></script>
+
 <link href="jquery/bootstrap_3.3.0/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
 <link href="jquery/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.min.css" type="text/css" rel="stylesheet" />
 
-
+<script type="text/javascript" src="jquery/jquery-1.11.1-min.js"></script>
 <script type="text/javascript" src="jquery/bootstrap_3.3.0/js/bootstrap.min.js"></script>
-	<%--这个是日历的核心都得放在jQuery下面--%>
 <script type="text/javascript" src="jquery/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.js"></script>
 <script type="text/javascript" src="jquery/bootstrap-datetimepicker-master/locale/bootstrap-datetimepicker.zh-CN.js"></script>
 
@@ -23,6 +22,7 @@
 	$(function(){
 		//为创建按钮绑定事件，打开添加操作的模态窗口
 		$("#addBtn").click(function (){
+
 			$(".time").datetimepicker({
 				minView: "month",
 				language:  'zh-CN',
@@ -30,6 +30,7 @@
 				autoclose: true,
 				todayBtn: true,
 				pickerPosition: "bottom-left"
+
 			});
 			/*
             操作模态窗口的方式：
@@ -107,11 +108,11 @@
 						<div class="form-group">
 							<label for="create-startTime" class="col-sm-2 control-label">开始日期</label>
 							<div class="col-sm-10" style="width: 300px;">
-								<input type="text" class="form-control" id="create-startTime">
+								<input type="text" class="form-control time" id="create-startTime">
 							</div>
 							<label for="create-endTime" class="col-sm-2 control-label">结束日期</label>
 							<div class="col-sm-10" style="width: 300px;">
-								<input type="text" class="form-control" id="create-endTime">
+								<input type="text" class="form-control time" id="create-endTime">
 							</div>
 						</div>
                         <div class="form-group">
