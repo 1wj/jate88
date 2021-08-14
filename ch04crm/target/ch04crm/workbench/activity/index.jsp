@@ -65,12 +65,44 @@
 					$("#createActivityModal").modal("show");
 
 				}
-
 			})
-
-
 		})
+		//为保存按钮绑定事件，执行添加操作
+		$("#saveBtn").click(function (){
+			$.ajax({
+				url:"workbench/activity/save.do",
+				data:{
+						"owner" : $.trim($("#create-owner").val()),
+						"name" : $.trim($("#create-name").val()),
+						"startDate" : $.trim($("#create-startDate").val()),
+						"endDate" : $.trim($("#create-endDate").val()),
+						"cost" : $.trim($("#create-cost").val()),
+						"description" : $.trim($("#create-description").val())
+					},
+				type: "post",
+				dataType: "json",
+				success : function (data){
+					/*
+						data {"success":true/false}
+					 */
 
+					if(data.success){
+						//添加成功后 刷新市场活动列表信息(局部刷新)
+						//清空添加操作模态窗口的数据  ，$("#acitvityAddForm").submit()是无效的，一个坑，所以用dom对象
+
+						var ss=$("#activityAddForm")[0];
+						ss.reset();
+
+
+
+						//关闭模态窗口
+						$("#createActivityModal").modal("hide");
+					}else {
+						alert("添加市场活动列表失败");
+					}
+				}
+			})
+		})
 		
 	});
 	
@@ -90,8 +122,8 @@
 				</div>
 				<div class="modal-body">
 				
-					<form class="form-horizontal" role="form">
-
+					<form id="activityAddForm" class="form-horizontal" role="form">
+						<input type="reset">
 						<div class="form-group">		<%--create-marketActivityOwner 我改了id--%>
 							<label for="create-owner" class="col-sm-2 control-label">所有者<span style="font-size: 15px; color: red;">*</span></label>
 							<div class="col-sm-10" style="width: 300px;">
@@ -101,18 +133,18 @@
 							</div>
                             <label for="create-marketActivityName" class="col-sm-2 control-label">名称<span style="font-size: 15px; color: red;">*</span></label>
                             <div class="col-sm-10" style="width: 300px;">
-                                <input type="text" class="form-control" id="create-marketActivityName">
+                                <input type="text" class="form-control" id="create-name"><%--create-marketActivityName--%>
                             </div>
 						</div>
 						
 						<div class="form-group">
 							<label for="create-startTime" class="col-sm-2 control-label">开始日期</label>
 							<div class="col-sm-10" style="width: 300px;">
-								<input type="text" class="form-control time" id="create-startTime">
+								<input type="text" class="form-control time" id="create-startDate"><%--create-startTime--%>
 							</div>
 							<label for="create-endTime" class="col-sm-2 control-label">结束日期</label>
 							<div class="col-sm-10" style="width: 300px;">
-								<input type="text" class="form-control time" id="create-endTime">
+								<input type="text" class="form-control time" id="create-endDate"><%--create-endTime--%>
 							</div>
 						</div>
                         <div class="form-group">
@@ -125,7 +157,7 @@
 						<div class="form-group">
 							<label for="create-describe" class="col-sm-2 control-label">描述</label>
 							<div class="col-sm-10" style="width: 81%;">
-								<textarea class="form-control" rows="3" id="create-describe"></textarea>
+								<textarea class="form-control" rows="3" id="create-description"></textarea><%--create-describe--%>
 							</div>
 						</div>
 						
@@ -133,8 +165,12 @@
 					
 				</div>
 				<div class="modal-footer">
+					<!--
+						data-dismiss="modal"
+							表示关闭模态窗口
+					-->
 					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-					<button type="button" class="btn btn-primary" data-dismiss="modal">保存</button>
+					<button type="button" class="btn btn-primary" id="saveBtn">保存</button>
 				</div>
 			</div>
 		</div>

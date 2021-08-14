@@ -26,5 +26,6 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<!-- <mapper resource="com/bjpowernode/mybatis/dao/StudentDao.xml" /> -->
 		<!--<package name="com.bjpowernode.crm.settings.dao"/>-->
 		<mapper resource="com/bjpowernode/crm/settings/dao/UserDao.xml"/>
+		<mapper resource="com/bjpowernode/crm/workbench/dao/ActivityDao.xml"/>
 	</mappers>
 </configuration>
