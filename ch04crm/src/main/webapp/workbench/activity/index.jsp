@@ -1,29 +1,73 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+	String path = request.getContextPath();
+	String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
 <!DOCTYPE html>
 <html>
 <head>
+	<base href="<%=basePath%>">
 <meta charset="UTF-8">
+	<script type="text/javascript" src="jquery/jquery-1.11.1-min.js"></script>
+<link href="jquery/bootstrap_3.3.0/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+<link href="jquery/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.min.css" type="text/css" rel="stylesheet" />
 
-<link href="../../jquery/bootstrap_3.3.0/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
-<link href="../../jquery/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.min.css" type="text/css" rel="stylesheet" />
 
-<script type="text/javascript" src="../../jquery/jquery-1.11.1-min.js"></script>
-<script type="text/javascript" src="../../jquery/bootstrap_3.3.0/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="../../jquery/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.js"></script>
-<script type="text/javascript" src="../../jquery/bootstrap-datetimepicker-master/locale/bootstrap-datetimepicker.zh-CN.js"></script>
+<script type="text/javascript" src="jquery/bootstrap_3.3.0/js/bootstrap.min.js"></script>
+	<%--这个是日历的核心都得放在jQuery下面--%>
+<script type="text/javascript" src="jquery/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.js"></script>
+<script type="text/javascript" src="jquery/bootstrap-datetimepicker-master/locale/bootstrap-datetimepicker.zh-CN.js"></script>
 
 <script type="text/javascript">
 
 	$(function(){
 		//为创建按钮绑定事件，打开添加操作的模态窗口
 		$("#addBtn").click(function (){
+			$(".time").datetimepicker({
+				minView: "month",
+				language:  'zh-CN',
+				format: 'yyyy-mm-dd',
+				autoclose: true,
+				todayBtn: true,
+				pickerPosition: "bottom-left"
+			});
 			/*
             操作模态窗口的方式：
                 需要操作的 【模态窗口】 的jQuery对象，调用model方法，为该方式传递参数
                 show：打开模态窗口，hide：关闭模态窗口
          */
-			alert(123);
-			$("#createActivityModal").modal("show");
+			//alert(123);
+			/*alert(123);
+			$("#createActivityModal").modal("show");*/
+			//走后台，目的是为了取得用户信息列表，为所有者下拉框铺值
+			$.ajax({
+				url:"workbench/activity/getUserList.do",
+				type:"post",
+				dataType:"json",
+				success : function (data){
+
+					//[{"id":?,"name":?....},{},{}]
+					var html="<option></option>";
+					$.each(data,function (i,n){
+						//遍历出来的每一个n，就是每一个user对象
+						html += "<option value='"+n.id+"'>"+n.name+"</option>"
+					})
+					$("#create-owner").html(html);
+					/*下拉框默认选中张三
+					* 取得当前登录用户的id
+					* 在js中使用el表达式，el表达式一定要套用在字符串中
+					* */
+					var id="${user.id}";
+					$("#create-owner").val(id);
+
+					//当所有下拉框处理完毕之后，展现模态窗口
+					$("#createActivityModal").modal("show");
+
+				}
+
+			})
+
+
 		})
 
 		
@@ -46,14 +90,12 @@
 				<div class="modal-body">
 				
 					<form class="form-horizontal" role="form">
-					
-						<div class="form-group">
-							<label for="create-marketActivityOwner" class="col-sm-2 control-label">所有者<span style="font-size: 15px; color: red;">*</span></label>
+
+						<div class="form-group">		<%--create-marketActivityOwner 我改了id--%>
+							<label for="create-owner" class="col-sm-2 control-label">所有者<span style="font-size: 15px; color: red;">*</span></label>
 							<div class="col-sm-10" style="width: 300px;">
-								<select class="form-control" id="create-marketActivityOwner">
-								  <option>zhangsan</option>
-								  <option>lisi</option>
-								  <option>wangwu</option>
+								<select class="form-control" id="create-owner">
+
 								</select>
 							</div>
                             <label for="create-marketActivityName" class="col-sm-2 control-label">名称<span style="font-size: 15px; color: red;">*</span></label>
@@ -129,11 +171,11 @@
 						<div class="form-group">
 							<label for="edit-startTime" class="col-sm-2 control-label">开始日期</label>
 							<div class="col-sm-10" style="width: 300px;">
-								<input type="text" class="form-control" id="edit-startTime" value="2020-10-10">
+								<input type="text" class="form-control time" id="edit-startTime" ><%--value="2020-10-10"--%>
 							</div>
 							<label for="edit-endTime" class="col-sm-2 control-label">结束日期</label>
 							<div class="col-sm-10" style="width: 300px;">
-								<input type="text" class="form-control" id="edit-endTime" value="2020-10-20">
+								<input type="text" class="form-control time" id="edit-endTime" ><%--value="2020-10-20"--%>
 							</div>
 						</div>
 						
@@ -245,7 +287,7 @@
 					<tbody>
 						<tr class="active">
 							<td><input type="checkbox" /></td>
-							<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='detail.html';">发传单</a></td>
+							<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='workbench/activity/detail.jsp';">发传单</a></td>
                             <td>zhangsan</td>
 							<td>2020-10-10</td>
 							<td>2020-10-20</td>

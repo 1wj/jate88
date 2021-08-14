@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ActivityController extends HttpServlet {
@@ -21,12 +22,15 @@ public class ActivityController extends HttpServlet {
         System.out.println("进入到市场活动控制器");
         String path = req.getServletPath();
         System.out.println(path);
-        if("/workbench/activity/xxx.do".equals(path)){
-            //login(req,resp);
-        }else if("/workbench/activity/xxx.do".equals(path)){
-
+        if("/workbench/activity/getUserList.do".equals(path)){
+            getUserList(req,resp);
         }
     }
-
+    private void getUserList(HttpServletRequest req, HttpServletResponse resp) {
+        System.out.println("取得用户信息列表");
+        UserService service= (UserService) ServiceFactory.getService(new UserServiceImpl());
+        List<User> uList= service.getUserList();
+        PrintJson.printJsonObj(resp,uList);
+    }
 
 }

@@ -8,6 +8,7 @@ import com.bjpowernode.crm.utils.SqlSessionUtil;
 
 import javax.security.auth.login.LoginException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class UserServiceImpl implements UserService {
@@ -34,5 +35,10 @@ public class UserServiceImpl implements UserService {
             throw new LoginException("ip不在允许范围内");
         }
         return user;
+    }
+
+    @Override
+    public List<User> getUserList() {
+        return userDao.getUserList();
     }
 }
