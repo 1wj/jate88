@@ -143,7 +143,7 @@
 
 				var param="";
 				for (var i = 0; i < $xz.length; i++) {
-					param+="id="+$($xz[0]).val();
+					param+="id="+$($xz[i]).val();
 					if(i < $xz.length-1){
 						param+="&";
 					}
