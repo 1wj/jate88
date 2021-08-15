@@ -140,31 +140,30 @@
 			}else {
 				//url:workbench/activity/delete.do?id=xxx&id=xxx&id=xxx...
 				//拼接参数
-
-				var param="";
-				for (var i = 0; i < $xz.length; i++) {
-					param+="id="+$($xz[i]).val();
-					if(i < $xz.length-1){
-						param+="&";
-					}
-				}
-				$.ajax({
-					url :"workbench/activity/delete.do",
-					type : "post",
-					data : param,
-					dataType : "json",
-					success : function (data){
-
-						// data:{"success": true/false}
-						if(data.success){
-
-							pageList(1,2);
-						}else {
-							alert("删除市场活动失败");
+				if(confirm("确定要删除所选中的记录吗？")){
+					var param="";
+					for (var i = 0; i < $xz.length; i++) {
+						param+="id="+$($xz[i]).val();
+						if(i < $xz.length-1){
+							param+="&";
 						}
-
 					}
-				})
+					$.ajax({
+						url :"workbench/activity/delete.do",
+						type : "post",
+						data : param,
+						dataType : "json",
+						success : function (data){
+							// data:{"success": true/false}
+							if(data.success){
+
+								pageList(1,2);
+							}else {
+								alert("删除市场活动失败");
+							}
+						}
+					})
+				}
 			}
 
 		})
