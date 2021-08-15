@@ -4,6 +4,7 @@ import com.bjpowernode.crm.settings.domain.User;
 import com.bjpowernode.crm.settings.service.UserService;
 import com.bjpowernode.crm.settings.service.impl.UserServiceImpl;
 import com.bjpowernode.crm.utils.*;
+import com.bjpowernode.crm.vo.PaginationVO;
 import com.bjpowernode.crm.workbench.domain.Activity;
 import com.bjpowernode.crm.workbench.service.ActivityService;
 import com.bjpowernode.crm.workbench.service.impl.ActivityServiceImpl;
@@ -27,9 +28,48 @@ public class ActivityController extends HttpServlet {
             getUserList(req,resp);
         }else if("/workbench/activity/save.do".equals(path)){
            save(req,resp);
+        }else if("/workbench/activity/pageList.do".equals(path)){
+            pageList(req,resp);
         }
     }
 
+    //分页查询
+    private void pageList(HttpServletRequest req, HttpServletResponse resp) {
+        System.out.println("进入到市场活动信息列表的操作（结合条件查询+分页）");
+        String name = req.getParameter("name");
+        String owner = req.getParameter("owner");
+        String startDate = req.getParameter("startDate");
+        String endDate = req.getParameter("endDate");
+        String pageNoStr = req.getParameter("pageNo");
+        int pageNo=Integer.valueOf(pageNoStr);
+        String pageSizeStr = req.getParameter("pageSize");
+        int pageSize=Integer.valueOf(pageSizeStr);
+        //计算略过的记录数 (页数-1)*条数
+        int skipCount=(pageNo-1)*pageSize;
+
+        Map<String,Object> map=new HashMap<>();
+        map.put("name",name);
+        map.put("owner",owner);
+        map.put("startDate",startDate);
+        map.put("endDate",endDate);
+        map.put("skipCount",skipCount);
+        map.put("pageSize",pageSize);
+
+        //不再使用动态代理
+        ActivityService as= (ActivityService) ServiceFactory.getService(new ActivityServiceImpl());
+       // ActivityService as= new ActivityServiceImpl();
+        /*
+                使用vo来装返回值，将来分页查询每个模块都有
+                vo
+                PaginationVO<T>
+                    private List<T> dataList
+                    private int total
+         */
+        PaginationVO<Activity> vo=as.pageList(map);
+        PrintJson.printJsonObj(resp,vo);
+    }
+
+    //市场活动的添加
     private void save(HttpServletRequest req, HttpServletResponse resp) {
         System.out.println("执行市场活动的添加操作");
 
@@ -62,6 +102,7 @@ public class ActivityController extends HttpServlet {
 
     }
 
+    //活动用户信息列表
     private void getUserList(HttpServletRequest req, HttpServletResponse resp) {
         System.out.println("取得用户信息列表");
         UserService service= (UserService) ServiceFactory.getService(new UserServiceImpl());
