@@ -30,7 +30,19 @@ public class ActivityController extends HttpServlet {
            save(req,resp);
         }else if("/workbench/activity/pageList.do".equals(path)){
             pageList(req,resp);
+        }else if("/workbench/activity/delete.do".equals(path)){
+            delete(req,resp);
         }
+    }
+
+    //删除市场活动
+    private void delete(HttpServletRequest req, HttpServletResponse resp) {
+        System.out.println("执行删除市场活动操作");
+        String[] ids = req.getParameterValues("id");
+        ActivityService as= (ActivityService) ServiceFactory.getService(new ActivityServiceImpl());
+       // ActivityService as=new ActivityServiceImpl();
+        Boolean flag=as.delete(ids);
+        PrintJson.printJsonFlag(resp,flag);
     }
 
     //分页查询

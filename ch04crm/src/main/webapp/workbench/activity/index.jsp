@@ -93,8 +93,10 @@
 						//清空添加操作模态窗口的数据  ，$("#acitvityAddForm").submit()是无效的，一个坑，所以用dom对象
 						var ss=$("#activityAddForm")[0];
 						ss.reset();
+
 						//关闭模态窗口
 						$("#createActivityModal").modal("hide");
+						pageList(1,2);
 					}else {
 						alert("添加市场活动列表失败");
 					}
@@ -129,6 +131,44 @@
 		$("#activityBody").on("click",$("input[name=xz]"),function (){
 			$("#qx").prop("checked",$("input[name=xz]").length == $("input[name=xz]:checked").length);
 		})
+		//为【删除按钮】绑定事件，执行市场活动删除操作
+		$("#deleteBtn").click(function (){
+			var $xz=$("input[name=xz]:checked");
+			if($xz.length==0){
+				alert("请选择要删除的记录");
+			//肯定选了，参数不知道有几条
+			}else {
+				//url:workbench/activity/delete.do?id=xxx&id=xxx&id=xxx...
+				//拼接参数
+
+				var param="";
+				for (var i = 0; i < $xz.length; i++) {
+					param+="id="+$($xz[0]).val();
+					if(i < $xz.length-1){
+						param+="&";
+					}
+				}
+				$.ajax({
+					url :"workbench/activity/delete.do",
+					type : "post",
+					data : param,
+					dataType : "json",
+					success : function (data){
+
+						// data:{"success": true/false}
+						if(data.success){
+
+							pageList(1,2);
+						}else {
+							alert("删除市场活动失败");
+						}
+
+					}
+				})
+			}
+
+		})
+
 	});
 
 	/*
@@ -137,6 +177,9 @@
 			③点击查询按钮的时候               ④点击分页组件的时候
 	 */
 		function pageList(pageNo,pageSize){
+			//将全新的复选框的√干掉
+			$("#qx").prop("checked",false);
+			//alert(1);
 			//查询前，将隐藏域中保存的信息取出啦，重新赋值到搜素框中
 			$("#search-name").val($.trim($("#hidden-name").val()));
 			$("#search-owner").val($.trim($("#hidden-owner").val()));
@@ -410,7 +453,7 @@
 				<div class="btn-group" style="position: relative; top: 18%;">
 				  <button type="button" class="btn btn-primary"  id="addBtn"><span class="glyphicon glyphicon-plus"></span> 创建</button>
 				  <button type="button" class="btn btn-default" data-toggle="modal" data-target="#editActivityModal"><span class="glyphicon glyphicon-pencil"></span> 修改</button>
-				  <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span> 删除</button>
+				  <button type="button" class="btn btn-danger" id="deleteBtn"><span class="glyphicon glyphicon-minus"></span> 删除</button>
 				</div>
 				
 			</div>
