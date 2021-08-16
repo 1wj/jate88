@@ -7,6 +7,7 @@ import com.bjpowernode.crm.vo.PaginationVO;
 import com.bjpowernode.crm.workbench.dao.ActivityDao;
 import com.bjpowernode.crm.workbench.dao.ActivityRemarkDao;
 import com.bjpowernode.crm.workbench.domain.Activity;
+import com.bjpowernode.crm.workbench.domain.ActivityRemark;
 import com.bjpowernode.crm.workbench.service.ActivityService;
 
 import java.util.HashMap;
@@ -92,5 +93,19 @@ public class ActivityServiceImpl implements ActivityService {
             flag=false;
         }
         return flag;
+    }
+
+    //也是根据id查单条但所有者是中文 不是UUID
+    @Override
+    public Activity detail(String id) {
+        Activity a=activityDao.detail(id);
+        return a;
+    }
+
+    //根据aid查询所有的备注对象
+    @Override
+    public List<ActivityRemark> getRemarkListByAid(String activityId) {
+        List<ActivityRemark> arList=activityRemarkDao.getRemarkListByAid(activityId);
+        return arList;
     }
 }

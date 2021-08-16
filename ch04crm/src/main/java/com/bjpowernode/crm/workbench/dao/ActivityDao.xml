@@ -18,6 +18,24 @@
           where id=#{id}
     </update>
 
+    <!--//也是根据id查单条但所有者是中文 不是UUID-->
+    <select id="detail" resultType="Activity">
+        select
+            a.id,
+            u.name as owner,
+            a.name,
+            a.startDate,
+            a.endDate,
+            a.cost,
+            a.description,
+            a.createTime,
+            a.createBy,
+            a.editTime,
+            a.editBy
+
+        from tbl_activity a,tbl_user u where a.owner=u.id and a.id=#{id}
+    </select>
+
    <!--根据id查单条-->
     <select id="getById" resultType="Activity">
         select * from tbl_activity where id=#{id}

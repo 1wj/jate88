@@ -5,6 +5,11 @@
 
 <mapper namespace="com.bjpowernode.crm.workbench.dao.ActivityRemarkDao">
 
+    <!--根据aid获得所有备注对象-->
+    <select id="getRemarkListByAid" resultType="ActivityRemark">
+        select * from tbl_activity_remark where activityId = #{activityId}
+    </select>
+
     <select id="getCountByAids" resultType="int">
         select  count(*) from tbl_activity_remark where activityId in
         <foreach collection="array" item="aid" open="(" close=")" separator=",">

@@ -6,6 +6,7 @@ import com.bjpowernode.crm.settings.service.impl.UserServiceImpl;
 import com.bjpowernode.crm.utils.*;
 import com.bjpowernode.crm.vo.PaginationVO;
 import com.bjpowernode.crm.workbench.domain.Activity;
+import com.bjpowernode.crm.workbench.domain.ActivityRemark;
 import com.bjpowernode.crm.workbench.service.ActivityService;
 import com.bjpowernode.crm.workbench.service.impl.ActivityServiceImpl;
 
@@ -36,7 +37,31 @@ public class ActivityController extends HttpServlet {
             getUserListAndActivity(req,resp);
         }else if("/workbench/activity/update.do".equals(path)){
             update(req,resp);
+        }else if("/workbench/activity/detail.do".equals(path)){
+            detail(req,resp);
+        }else if("/workbench/activity/getRemarkListByAid.do".equals(path)){
+            getRemarkListByAid(req,resp);
         }
+
+    }
+
+    //根据市场活动id,取得备注信息列表（一个集合）
+    private void getRemarkListByAid(HttpServletRequest req, HttpServletResponse resp) {
+        System.out.println("根据市场活动id,取得备注信息列表");
+        String activityId = req.getParameter("activityId");
+        ActivityService as= (ActivityService) ServiceFactory.getService(new ActivityServiceImpl());
+        List<ActivityRemark> arList = as.getRemarkListByAid(activityId);
+        PrintJson.printJsonObj(resp,arList);
+    }
+
+    //获取备注信息的一个对象
+    private void detail(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("进入到跳转到详细信息页的操作");
+        String id = req.getParameter("id");
+        ActivityService as= (ActivityService) ServiceFactory.getService(new ActivityServiceImpl());
+        Activity a=as.detail(id);
+        req.setAttribute("a",a);
+        req.getRequestDispatcher("/workbench/activity/detail.jsp").forward(req,resp);
     }
 
     //修改
