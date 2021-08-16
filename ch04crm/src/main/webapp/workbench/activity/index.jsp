@@ -97,7 +97,17 @@
 
 						//关闭模态窗口
 						$("#createActivityModal").modal("hide");
-						pageList(1,2);
+						//pageList(1,2); 实在不行再用他
+
+						/* bootstrap自带的自动跳页的插件
+							表示操作后停留在当页：$("#activityPage").bs_pagination('getOption', 'currentPage')
+							操作后维持以经设置好的每页展现的记录数:$("#activityPage").bs_pagination('getOption', 'rowsPerPage')
+							不要修改，直接使用
+						*/
+						//做完添加后，应该回到第一页，维持每页展现的记录数
+						pageList(1
+								,$("#activityPage").bs_pagination('getOption', 'rowsPerPage'));
+
 					}else {
 						alert("添加市场活动列表失败");
 					}
@@ -158,8 +168,11 @@
 						success : function (data){
 							// data:{"success": true/false}
 							if(data.success){
+								//删除成功后，回到第一页，维持每页展现的记录数
+								pageList(1
+										,$("#activityPage").bs_pagination('getOption', 'rowsPerPage'));
 
-								pageList(1,2);
+								//pageList(1,2);
 							}else {
 								alert("删除市场活动失败");
 							}
@@ -238,7 +251,13 @@
 					if(data.success){
 						//修改成功后 刷新市场活动列表信息(局部刷新)
 						//清空添加操作模态窗口的数据  ，$("#acitvityAddForm").submit()是无效的，一个坑，所以用dom对象
-						pageList(1,2);
+						//pageList(1,2);使用插件了实在不行再用他
+
+						//修改操作后，应该维持在当前页，维持每页展现的记录数
+						pageList($("#activityPage").bs_pagination('getOption', 'currentPage')
+								,$("#activityPage").bs_pagination('getOption', 'rowsPerPage'));
+
+
 						//关闭修改操作的模态窗口
 						$("#editActivityModal").modal("hide");
 
