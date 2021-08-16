@@ -70,6 +70,7 @@
 				}
 			})
 		})
+
 		//为【保存】按钮绑定事件，执行添加操作
 		$("#saveBtn").click(function (){
 			$.ajax({
@@ -124,13 +125,14 @@
 			$("input[name=xz]").prop("checked",this.checked);
 		});
 
-		/*  	【单选按钮】点亮【全选】按钮
+		/*  【单选按钮】点亮【全选】按钮
 			因为动态生成的元素，是不能以普通绑定事件的形式来进行操作的，动态生成的元素，我们要以【on方法】的形式来触发事件
 			语法：$(需要绑定元素的有效的外层元素).on(绑定事件的方式，需要绑定的元素的jQuery对象，回调函数)
 		 */
 		$("#activityBody").on("click",$("input[name=xz]"),function (){
 			$("#qx").prop("checked",$("input[name=xz]").length == $("input[name=xz]:checked").length);
 		})
+
 		//为【删除按钮】绑定事件，执行市场活动删除操作
 		$("#deleteBtn").click(function (){
 			var $xz=$("input[name=xz]:checked");
@@ -168,6 +170,51 @@
 
 		})
 
+		//为【修改按钮绑定事件】，打开修改操作的模态窗口
+		$("#editBtn").click(function (){
+			var $xz= $("input[name=xz]:checked");
+
+			if($xz.length==0){
+				alert("请选择需要修改的记录");
+			}else if($xz.length > 1){
+				alert("只能选择一条记录进行修改");
+			}else {
+				//  date：{"uList":[{用户1},{2}],"a":{市场活动}}
+				var id=$xz.val();
+
+				$.ajax({
+					url : "workbench/activity/getUserListAndActivity.do",
+					data : {
+						"id" : id
+					},
+					type : "get",
+					dataType : "json",
+					success : function (data){
+						alert("成功进入");
+						//处理所有者下拉框
+						var html="<option></option>";
+						$.each(data.uList,function (i,n){//每一个n就是一个用户对象
+							html+="<option selected value='"+n.id+"'>"+n.name+"</option>";
+						})
+						$("#edit-owner").html(html);
+
+						//处理单条activity
+						$("#edit-id").val(data.a.id);
+						$("#edit-name").val(data.a.name);
+						$("#edit-owner").val(data.a.owner);
+						$("#edit-startDate").val(data.a.startDate);
+						$("#edit-endDate").val(data.a.endDate);
+						$("#edit-cost").val(data.a.cost);
+						$("#edit-description").val(data.a.description);
+
+						//打开修改的模态窗口
+						$("#editActivityModal").modal("show");
+					}
+				})
+
+			}
+
+		})
 	});
 
 	/*
@@ -207,6 +254,7 @@
 					var html="";
 					//每一个n就是一个市场活动对象
 					$.each(data.dataList,function (i,n){
+
 						html+='<tr class="active">';
 						html+='<td><input type="checkbox" value="'+n.id+'" name="xz" /></td>';
 						html+='<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href=\'workbench/activity/detail.jsp\';">'+n.name+'</a></td>';
@@ -333,30 +381,28 @@
 				<div class="modal-body">
 				
 					<form class="form-horizontal" role="form">
-					
+						<input type="hidden" id="edit-id">
 						<div class="form-group">
 							<label for="edit-marketActivityOwner" class="col-sm-2 control-label">所有者<span style="font-size: 15px; color: red;">*</span></label>
 							<div class="col-sm-10" style="width: 300px;">
-								<select class="form-control" id="edit-marketActivityOwner">
-								  <option>zhangsan</option>
-								  <option>lisi</option>
-								  <option>wangwu</option>
+								<select class="form-control" id="edit-owner">
+
 								</select>
 							</div>
                             <label for="edit-marketActivityName" class="col-sm-2 control-label">名称<span style="font-size: 15px; color: red;">*</span></label>
                             <div class="col-sm-10" style="width: 300px;">
-                                <input type="text" class="form-control" id="edit-marketActivityName" value="发传单">
+                                <input type="text" class="form-control" id="edit-name" >
                             </div>
 						</div>
 
 						<div class="form-group">
 							<label for="edit-startTime" class="col-sm-2 control-label">开始日期</label>
 							<div class="col-sm-10" style="width: 300px;">
-								<input type="text" class="form-control time" id="edit-startTime" ><%--value="2020-10-10"--%>
+								<input type="text" class="form-control time " id="edit-startDate" ><%--value="2020-10-10"--%>
 							</div>
 							<label for="edit-endTime" class="col-sm-2 control-label">结束日期</label>
 							<div class="col-sm-10" style="width: 300px;">
-								<input type="text" class="form-control time" id="edit-endTime" ><%--value="2020-10-20"--%>
+								<input type="text" class="form-control time" id="edit-endDate" ><%--value="2020-10-20"--%>
 							</div>
 						</div>
 						
@@ -370,7 +416,13 @@
 						<div class="form-group">
 							<label for="edit-describe" class="col-sm-2 control-label">描述</label>
 							<div class="col-sm-10" style="width: 81%;">
-								<textarea class="form-control" rows="3" id="edit-describe">市场活动Marketing，是指品牌主办或参与的展览会议与公关市场活动，包括自行主办的各类研讨会、客户交流会、演示会、新产品发布会、体验会、答谢会、年会和出席参加并布展或演讲的展览会、研讨会、行业交流会、颁奖典礼等</textarea>
+								<%--
+									关于文本域textarea：
+										①一定要以标签对的形式来呈现，正常情况下要紧紧的挨着
+										②textarea虽然是以标签对的形式来呈现的，但是它也是属于表单元素范畴
+										我们所有的对于textarea的取值和赋值，应该统一使用val()方法，(而不是html()方法)
+								--%>
+								<textarea class="form-control" rows="3" id="edit-description"></textarea>
 							</div>
 						</div>
 						
@@ -379,7 +431,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-					<button type="button" class="btn btn-primary" data-dismiss="modal">更新</button>
+					<button type="button" class="btn btn-primary" id="updateBtn">更新</button><%--关闭模态窗口data-dismiss="modal"--%>
 				</div>
 			</div>
 		</div>
@@ -451,7 +503,7 @@
 					--%>
 				<div class="btn-group" style="position: relative; top: 18%;">
 				  <button type="button" class="btn btn-primary"  id="addBtn"><span class="glyphicon glyphicon-plus"></span> 创建</button>
-				  <button type="button" class="btn btn-default" data-toggle="modal" data-target="#editActivityModal"><span class="glyphicon glyphicon-pencil"></span> 修改</button>
+				  <button type="button" class="btn btn-default" id="editBtn"><span class="glyphicon glyphicon-pencil"></span> 修改</button>
 				  <button type="button" class="btn btn-danger" id="deleteBtn"><span class="glyphicon glyphicon-minus"></span> 删除</button>
 				</div>
 				
