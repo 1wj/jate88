@@ -76,13 +76,13 @@
 			$.ajax({
 				url:"workbench/activity/save.do",
 				data:{
-						"owner" : $.trim($("#create-owner").val()),
-						"name" : $.trim($("#create-name").val()),
-						"startDate" : $.trim($("#create-startDate").val()),
-						"endDate" : $.trim($("#create-endDate").val()),
-						"cost" : $.trim($("#create-cost").val()),
-						"description" : $.trim($("#create-description").val())
-					},
+					"owner" : $.trim($("#create-owner").val()),
+					"name" : $.trim($("#create-name").val()),
+					"startDate" : $.trim($("#create-startDate").val()),
+					"endDate" : $.trim($("#create-endDate").val()),
+					"cost" : $.trim($("#create-cost").val()),
+					"description" : $.trim($("#create-description").val())
+				},
 				type: "post",
 				dataType: "json",
 				success : function (data){
@@ -170,7 +170,7 @@
 
 		})
 
-		//为【修改按钮绑定事件】，打开修改操作的模态窗口
+		//为【修改按钮]绑定事件，打开修改操作的模态窗口
 		$("#editBtn").click(function (){
 			var $xz= $("input[name=xz]:checked");
 
@@ -190,7 +190,7 @@
 					type : "get",
 					dataType : "json",
 					success : function (data){
-						alert("成功进入");
+						//alert("成功进入");
 						//处理所有者下拉框
 						var html="<option></option>";
 						$.each(data.uList,function (i,n){//每一个n就是一个用户对象
@@ -214,6 +214,39 @@
 
 			}
 
+		})
+
+		//为【更新按钮】绑定事件，执行市场活动的修改操作
+		$("#updateBtn").click(function (){
+			$.ajax({
+				url:"workbench/activity/update.do",
+				data:{
+					"id" : $.trim($("#edit-id").val()),
+					"owner" : $.trim($("#edit-owner").val()),
+					"name" : $.trim($("#edit-name").val()),
+					"startDate" : $.trim($("#edit-startDate").val()),
+					"endDate" : $.trim($("#edit-endDate").val()),
+					"cost" : $.trim($("#edit-cost").val()),
+					"description" : $.trim($("#edit-description").val())
+				},
+				type: "post",
+				dataType: "json",
+				success : function (data){
+					/*
+						data {"success":true/false}
+					 */
+					if(data.success){
+						//修改成功后 刷新市场活动列表信息(局部刷新)
+						//清空添加操作模态窗口的数据  ，$("#acitvityAddForm").submit()是无效的，一个坑，所以用dom对象
+						pageList(1,2);
+						//关闭修改操作的模态窗口
+						$("#editActivityModal").modal("hide");
+
+					}else {
+						alert("修改市场活动列表失败");
+					}
+				}
+			})
 		})
 	});
 
@@ -449,7 +482,7 @@
 	</div>
 	<div style="position: relative; top: -20px; left: 0px; width: 100%; height: 100%;">
 		<div style="width: 100%; position: absolute;top: 5px; left: 10px;">
-		<%--模糊查询--%>
+			<%--模糊查询--%>
 			<div class="btn-toolbar" role="toolbar" style="height: 80px;">
 				<form class="form-inline" role="form" style="position: relative;top: 8%; left: 5px;">
 				  

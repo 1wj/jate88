@@ -18,6 +18,7 @@ public class ActivityServiceImpl implements ActivityService {
     ActivityRemarkDao activityRemarkDao=SqlSessionUtil.getSqlSession().getMapper(ActivityRemarkDao.class);
     UserDao userDao=SqlSessionUtil.getSqlSession().getMapper(UserDao.class);
 
+    //保存
     @Override
     public Boolean save(Activity activity) {
         Boolean flag=true;
@@ -29,6 +30,7 @@ public class ActivityServiceImpl implements ActivityService {
 
     }
 
+    //分页查询
     @Override
     public PaginationVO<Activity> pageList(Map<String, Object> map) {
         System.out.println("进入service层");
@@ -43,6 +45,7 @@ public class ActivityServiceImpl implements ActivityService {
        return vo;
     }
 
+    //删除
     @Override
     public Boolean delete(String[] ids) {
         System.out.println("进入到service层的delete方法");
@@ -77,5 +80,17 @@ public class ActivityServiceImpl implements ActivityService {
         map.put("a",a);
         //返回map就可以了
         return map;
+    }
+
+    //修改
+
+    @Override
+    public Boolean update(Activity activity) {
+        Boolean flag=true;
+        int i=activityDao.update(activity);
+        if(i!=1){
+            flag=false;
+        }
+        return flag;
     }
 }
