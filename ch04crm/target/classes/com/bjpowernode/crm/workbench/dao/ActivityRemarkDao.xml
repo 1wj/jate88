@@ -5,6 +5,15 @@
 
 <mapper namespace="com.bjpowernode.crm.workbench.dao.ActivityRemarkDao">
 
+    <!--修改一条备注记录-->
+    <update id="updateRemark">
+        update tbl_activity_remark set  noteContent=#{noteContent},
+                                       editBy=#{editBy},
+                                       editTime=#{editTime},
+                                       editFlag=#{editFlag}
+        where id=#{id}
+    </update>
+
     <!--增加一条备注记录-->
     <insert id="saveRemark">
         insert into tbl_activity_remark(

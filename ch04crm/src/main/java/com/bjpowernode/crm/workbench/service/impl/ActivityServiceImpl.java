@@ -130,4 +130,15 @@ public class ActivityServiceImpl implements ActivityService {
        }
        return flag;
     }
+
+    //修改备注对象
+    @Override
+    public Boolean updateRemark(ActivityRemark ar) {
+        Boolean flag=true;
+        int count=activityRemarkDao.updateRemark(ar);
+        if(count!=1){
+            flag=false;
+        }
+        return flag;
+    }
 }
