@@ -41,8 +41,19 @@ public class ActivityController extends HttpServlet {
             detail(req,resp);
         }else if("/workbench/activity/getRemarkListByAid.do".equals(path)){
             getRemarkListByAid(req,resp);
+        }else if("/workbench/activity/deleteRemark.do".equals(path)){
+            deleteRemark(req,resp);
         }
 
+    }
+
+    //删除备注操作
+    private void deleteRemark(HttpServletRequest req, HttpServletResponse resp) {
+        System.out.println("删除备注操作");
+        String id = req.getParameter("id");
+        ActivityService as= (ActivityService) ServiceFactory.getService(new ActivityServiceImpl());
+        Boolean flag=as.deleteRemark(id);
+        PrintJson.printJsonFlag(resp,flag);
     }
 
     //根据市场活动id,取得备注信息列表（一个集合）
