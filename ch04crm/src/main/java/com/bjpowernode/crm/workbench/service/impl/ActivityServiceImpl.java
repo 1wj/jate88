@@ -109,6 +109,7 @@ public class ActivityServiceImpl implements ActivityService {
         return arList;
     }
 
+    //删除备注对象
     @Override
     public Boolean deleteRemark(String id) {
         boolean flag=true;
@@ -117,5 +118,16 @@ public class ActivityServiceImpl implements ActivityService {
             flag=false;
         }
         return flag;
+    }
+
+    //新增一条备注对象
+    @Override
+    public Boolean saveRemark(ActivityRemark ar) {
+       Boolean flag=true;
+       int count=activityRemarkDao.saveRemark(ar);
+       if(count!=1){
+           flag=false;
+       }
+       return flag;
     }
 }

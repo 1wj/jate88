@@ -5,6 +5,26 @@
 
 <mapper namespace="com.bjpowernode.crm.workbench.dao.ActivityRemarkDao">
 
+    <!--增加一条备注记录-->
+    <insert id="saveRemark">
+        insert into tbl_activity_remark(
+            id,
+            noteContent,
+            createTime,
+            createBy,
+            editFlag,
+            activityId
+        )
+        values (
+            #{id},
+            #{noteContent},
+            #{createTime},
+            #{createBy},
+            #{editFlag},
+            #{activityId}
+               )
+    </insert>
+
     <!--根据备注id删除备注记录-->
     <delete id="deleteById">
         delete from tbl_activity_remark where id=#{id}
