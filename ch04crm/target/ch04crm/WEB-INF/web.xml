@@ -35,20 +35,20 @@
     </filter-mapping>
     <!--用户登录-->
     <servlet>
-        <servlet-name>/UserController</servlet-name>
+        <servlet-name>UserController</servlet-name>
         <servlet-class>com.bjpowernode.crm.settings.web.controller.UserController</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>/UserController</servlet-name>
+        <servlet-name>UserController</servlet-name>
         <url-pattern>/settings/user/login.do</url-pattern>
     </servlet-mapping>
     <!--市场活动-->
     <servlet>
-        <servlet-name>/ActivityController</servlet-name>
+        <servlet-name>ActivityController</servlet-name>
         <servlet-class>com.bjpowernode.crm.workbench.web.controller.ActivityController</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>/ActivityController</servlet-name>
+        <servlet-name>ActivityController</servlet-name>
         <url-pattern>/workbench/activity/getUserList.do</url-pattern>
         <url-pattern>/workbench/activity/save.do</url-pattern>
         <url-pattern>/workbench/activity/pageList.do</url-pattern>
@@ -60,5 +60,16 @@
         <url-pattern>/workbench/activity/deleteRemark.do</url-pattern>
         <url-pattern>/workbench/activity/saveRemark.do</url-pattern>
         <url-pattern>/workbench/activity/updateRemark.do</url-pattern>
+    </servlet-mapping>
+
+    <!--线索模块-->
+    <servlet>
+        <servlet-name>ClueController</servlet-name>
+        <servlet-class>com.bjpowernode.crm.workbench.web.controller.ClueController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ClueController</servlet-name>
+        <url-pattern>/workbench/clue/getUserList.do</url-pattern>
+
     </servlet-mapping>
 </web-app>
