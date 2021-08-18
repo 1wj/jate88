@@ -64,7 +64,7 @@
 			$(this).children("div").children("div").hide();
 		});
 
-		//为【保存按钮】绑定事件，执行备注的添加操作
+		//为【保存按钮】绑定事件，执行备注的添加操作，创建一个新的备注对象
 		$("#saveRemarkBtn").click(function (){
 			//alert(1);
 			$.ajax({
@@ -86,8 +86,8 @@
 						html += '<div id="'+data.ar.id+'" class="remarkDiv" style="height: 60px;">';
 						html += '<img title="zhangsan" src="image/user-thumbnail.png" style="width: 30px; height:30px;">';
 						html += '<div style="position: relative; top: -40px; left: 40px;" >';
-						html += '<h5>'+data.ar.noteContent+'</h5>';
-						html += '<font color="gray">市场活动</font> <font color="gray">-</font> <b>${a.name}</b> <small style="color: gray;">'+data.ar.createTime+'由'+data.ar.createBy+'</small>';
+						html += '<h5 id="e'+ar.data.id+'">'+data.ar.noteContent+'</h5>';
+						html += '<font color="gray">市场活动</font> <font color="gray">-</font> <b>${a.name}</b> <small style="color: gray;" id="s'+data.ar.id+'" >'+data.ar.createTime+'由'+data.ar.createBy+'</small>';
 						html += '<div style="position: relative; left: 500px; top: -30px; height: 30px; width: 100px; display: none;">';
 						html += '<a class="myHref" href="javascript:void(0);" onclick="editRemark(\''+data.ar.id+'\')"><span class="glyphicon glyphicon-edit" style="font-size: 20px; color: #FF0000;"></span></a>';
 						html += '&nbsp;&nbsp;&nbsp;&nbsp;';
@@ -105,8 +105,8 @@
 
 		//为【更新按钮】绑定事件
 		$("#updateRemarkBtn").click(function (){
-			var id=$("#remarkId").val();
-			alert(id);
+			var id=$("#remarkId").val();//从隐藏域中取出id
+			//alert(id);
 			$.ajax({
 				url:"workbench/activity/updateRemark.do",
 				data:{
@@ -116,7 +116,7 @@
 				type:"post",
 				dataType:"json",
 				success:function (data) {
-					alert("成功");
+				//	alert("成功");
 					//data:{"success":true/false,"ar":{备注对象}}
 					if(data.success){
 						//更新div中相应的信息，需要更新的内容有 noteContent ,editTime,editBy
@@ -178,7 +178,7 @@
 				//alert("成功进入");
 				if(data.success){
 					//这不行，记录使用的是before方法，每一次删除之后，约删约多 ，showRemarkList();
-					$("#"+id).remove();
+					$("#"+id).remove();//它和它的子节点一起删掉 在查询里面的最大的div
 				}else {
 					alert("删除备注失败");
 				}
@@ -190,7 +190,7 @@
 	}
 	//修改备注
 	function editRemark(id){
-		//将模态窗口中，隐藏域中的id进行赋值
+		//将模态窗口中，往隐藏域中的id进行赋值
 		$("#remarkId").val(id);
 		//找到指定的存放备注信息的H5标签
 		var noteContent=$("#e"+id).html();

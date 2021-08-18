@@ -30,5 +30,17 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<mapper resource="com/bjpowernode/crm/settings/dao/UserDao.xml"/>
 		<mapper resource="com/bjpowernode/crm/workbench/dao/ActivityDao.xml"/>
 		<mapper resource="com/bjpowernode/crm/workbench/dao/ActivityRemarkDao.xml"/>
+		<!--<mapper resource="com/bjpowernode/crm/workbench/dao/ClueActivityRelationDao.xml"/>
+		<mapper resource="com/bjpowernode/crm/workbench/dao/ClueDao.xml"/>
+		<mapper resource="com/bjpowernode/crm/workbench/dao/ClueRemarkDao.xml"/>
+		<mapper resource="com/bjpowernode/crm/workbench/dao/ContactsActivityRelationDao.xml"/>
+		<mapper resource="com/bjpowernode/crm/workbench/dao/ContactsDao.xml"/>
+		<mapper resource="com/bjpowernode/crm/workbench/dao/ContactsRemarkDao.xml"/>
+		<mapper resource="com/bjpowernode/crm/workbench/dao/CustomerDao.xml"/>
+		<mapper resource="com/bjpowernode/crm/workbench/dao/CustomerRemarkDao.xml"/>
+		<mapper resource="com/bjpowernode/crm/workbench/dao/TranDao.xml"/>
+		<mapper resource="com/bjpowernode/crm/workbench/dao/TranHistoryDao.xml"/>
+		<package name = "com.bjpowernode.crm.workbench.dao"/>-->
+
 	</mappers>
 </configuration>
