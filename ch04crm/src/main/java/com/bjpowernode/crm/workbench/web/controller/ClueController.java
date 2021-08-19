@@ -28,15 +28,19 @@ public class ClueController extends HttpServlet {
         System.out.println("进入到线索控制器");
         String path = req.getServletPath();
         System.out.println(path);
-        if("/workbench/activity/getUserList.do".equals(path)){
-
-        }else if("/workbench/activity/save.do".equals(path)){
-
+        if("/workbench/clue/getUserList.do".equals(path)){
+            getUserList(req,resp);
         }
 
     }
 
+    private void getUserList(HttpServletRequest req, HttpServletResponse resp) {
+        System.out.println("取的用户信息列表");
+        UserService us= (UserService) ServiceFactory.getService(new UserServiceImpl());
+        List<User> uList = us.getUserList();
+        PrintJson.printJsonObj(resp,uList);
 
+    }
 
 
 }

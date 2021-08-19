@@ -33,6 +33,11 @@
         <url-pattern>*.do</url-pattern>
         <url-pattern>*.jsp</url-pattern>
     </filter-mapping>
+
+    <!--监听器-->
+    <listener>
+        <listener-class>com.bjpowernode.crm.web.filter.SysInitListener</listener-class>
+    </listener>
     <!--用户登录-->
     <servlet>
         <servlet-name>UserController</servlet-name>
