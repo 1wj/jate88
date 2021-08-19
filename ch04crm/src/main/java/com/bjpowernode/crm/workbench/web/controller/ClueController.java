@@ -10,14 +10,18 @@ import com.bjpowernode.crm.utils.UUIDUtil;
 import com.bjpowernode.crm.vo.PaginationVO;
 import com.bjpowernode.crm.workbench.domain.Activity;
 import com.bjpowernode.crm.workbench.domain.ActivityRemark;
+import com.bjpowernode.crm.workbench.domain.Clue;
 import com.bjpowernode.crm.workbench.service.ActivityService;
+import com.bjpowernode.crm.workbench.service.ClueService;
 import com.bjpowernode.crm.workbench.service.impl.ActivityServiceImpl;
+import com.bjpowernode.crm.workbench.service.impl.ClueServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +34,57 @@ public class ClueController extends HttpServlet {
         System.out.println(path);
         if("/workbench/clue/getUserList.do".equals(path)){
             getUserList(req,resp);
+        }else if ("/workbench/clue/save.do".equals(path)){
+            save(req,resp);
         }
+
+    }
+
+    private void save(HttpServletRequest req, HttpServletResponse resp) {
+            System.out.println("执行线索的添加");
+            String id=UUIDUtil.getUUID();
+            String fullname=req.getParameter("fullname");
+            String appellation=req.getParameter("appellation");
+            String owner=req.getParameter("owner");
+            String company=req.getParameter("company");
+            String job=req.getParameter("job");
+            String email=req.getParameter("email");
+            String phone=req.getParameter("phone");
+            String website=req.getParameter("website");
+            String mphone=req.getParameter("mphone");
+            String state=req.getParameter("state");
+            String source=req.getParameter("source");
+            String createBy= ((User)req.getSession().getAttribute("user")).getName();
+            String createTime=DateTimeUtil.getSysTime();
+            String description=req.getParameter("description");
+            String contactSummary=req.getParameter("contactSummary");
+            String nextContactTime=req.getParameter("nextContactTime");
+            String address = req.getParameter("address");
+
+        Clue c=new Clue();
+            c.setId(id);
+            c.setFullname(fullname);
+            c.setAppellation(appellation);
+            c.setOwner(owner);
+            c.setCompany(company);
+            c.setJob(job);
+            c.setEmail(email);
+            c.setPhone(phone);
+            c.setWebsite(website);
+            c.setMphone(mphone);
+            c.setState(state);
+            c.setSource(source);
+            c.setCreateBy(createBy);
+            c.setCreateTime(createTime);
+            c.setDescription(description);
+            c.setContactSummary(contactSummary);
+            c.setNextContactTime(nextContactTime);
+            c.setAddress(address);
+
+            ClueService cs= (ClueService) ServiceFactory.getService(new ClueServiceImpl());
+            Boolean flag=cs.save(c);
+            PrintJson.printJsonFlag(resp,flag);
+
 
     }
 
