@@ -4,4 +4,6 @@ import com.bjpowernode.crm.workbench.domain.Clue;
 
 public interface ClueService {
     Boolean save(Clue c);
+
+    Clue detail(String id);
 }

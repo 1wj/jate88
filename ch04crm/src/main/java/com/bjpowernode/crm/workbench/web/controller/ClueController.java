@@ -20,6 +20,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
@@ -36,7 +37,21 @@ public class ClueController extends HttpServlet {
             getUserList(req,resp);
         }else if ("/workbench/clue/save.do".equals(path)){
             save(req,resp);
+        }else if ("/workbench/clue/detail.do".equals(path)){
+            detail(req,resp);
         }
+
+    }
+
+    private void detail(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("跳转到线索详细信息页");
+        String id=req.getParameter("id");
+       ClueService cs= new ClueServiceImpl();
+       Clue c=cs.detail(id);
+      PrintJson.printJsonObj(resp,c);
+      /*  session.setAttribute("cc",c);
+    req.getRequestDispatcher("/workbench/clue/detail.jsp").forward(req,resp);
+   */
 
     }
 

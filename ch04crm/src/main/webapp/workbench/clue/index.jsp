@@ -518,7 +518,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<tbody>
 						<tr>
 							<td><input type="checkbox" /></td>
-							<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='workbench/clue/detail.jsp';">李四先生</a></td>
+							<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='workbench/clue/detail.jsp?id=082e3909314f47979dce678d8f6121ab';">地方先生</a></td>
 							<td>动力节点</td>
 							<td>010-84846003</td>
 							<td>12345678901</td>
@@ -526,16 +526,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<td>zhangsan</td>
 							<td>已联系</td>
 						</tr>
-                        <tr class="active">
+                       <%-- <tr class="active">
                             <td><input type="checkbox" /></td>
-                            <td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='detail.jsp';">李四先生</a></td>
+                            <td><a style="text-decoration: none; cursor: pointer;" href="${pageContext.request.contextPaht}/workbench/clue/detail.do?id=082e3909314f47979dce678d8f6121ab">李四先生</a></td>
                             <td>动力节点</td>
                             <td>010-84846003</td>
                             <td>12345678901</td>
                             <td>广告</td>
                             <td>zhangsan</td>
                             <td>已联系</td>
-                        </tr>
+                        </tr>--%>
 					</tbody>
 				</table>
 			</div>
