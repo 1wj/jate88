@@ -10,5 +10,6 @@ package com.bjpowernode.crm.vo;
 public class testVo {
         public  static void tw(){
             System.out.println("ceshi");
+            System.out.println("ceshi2");
         }
 }
